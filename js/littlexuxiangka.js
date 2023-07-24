@@ -78,7 +78,7 @@
 
     $.ajax({
       type: 'GET',
-      url: '../json/data-little2.json',
+      url: './json/data-little2.json',
       success: function (data) {
         date = data;
       },
@@ -145,7 +145,7 @@
 
     $.ajax({
       type: 'GET',
-      url: '../json/data-little2.json',
+      url: './json/data-little2.json',
       success: function (data) {
         date = data;
       },
@@ -215,7 +215,7 @@
 
     $.ajax({
       type: 'GET',
-      url: '../json/data-little2.json',
+      url: './json/data-little2.json',
       success: function (data) {
         date = data;
       },
