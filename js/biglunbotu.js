@@ -28,6 +28,8 @@
   nexterKey.onclick = function () {
     mySwiper.slideNext();
   }
+  console.log(`hhhh-->`,);
+
 
 
   function getData() {

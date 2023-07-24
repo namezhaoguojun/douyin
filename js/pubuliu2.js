@@ -1,30 +1,30 @@
 
 
-(function rightFlow(){
+(function rightFlow() {
   //let columns = Array.from(document.querySelectorAll('.colum'))
-//console.log(columns);
-let data = null
-let videoBoxs=null
-let itemBox=document.getElementById("itemBox")
-//通过AJXA获取json数据，客户端循环渲染
-function getData() {
-  let xhr = new XMLHttpRequest
-  xhr.open("get", "../json/data2.json", false)
-  xhr.onreadystatechange = function () {
-    if (xhr.status === 200 && xhr.readyState === 4) {
-      data = JSON.parse(xhr.response)
+  //console.log(columns);
+  let data = null
+  let videoBoxs = null
+  let itemBox = document.getElementById("itemBox")
+  //通过AJXA获取json数据，客户端循环渲染
+  function getData() {
+    let xhr = new XMLHttpRequest
+    xhr.open("get", "./json/data2.json", false)
+    xhr.onreadystatechange = function () {
+      if (xhr.status === 200 && xhr.readyState === 4) {
+        data = JSON.parse(xhr.response)
+      }
+      //console.log(data);
     }
-    //console.log(data);
+    xhr.send(null)
+
   }
-  xhr.send(null)
+  getData()
 
-}
-getData()
-
-function render() {
+  function render() {
     data.forEach((item, index) => {
-      let { id, pic,video, height, likes, duration, name, date, title, link } = item
-      let str =`<div class="item">
+      let { id, pic, video, height, likes, duration, name, date, title, link } = item
+      let str = `<div class="item">
                   <a href="#">
                     <div class="videoBox" style="height:${height}px">
                       <div class="showBg">
@@ -72,75 +72,75 @@ function render() {
                       <div class="video-introduction">${title} </div>
                     </div>
                   </a>
-                </div>` 
+                </div>`
 
-     //columns[index].innerHTML+=str;
-     itemBox.innerHTML+=str
-     
-    }) 
-  
-  videoBoxs=Array.from(document.querySelectorAll(".videoBox"))
-     //console.log(videoBoxs);
-}
-render()
-//展示图片
-function showImg(img){
-  let datasrc=img.getAttribute("data-src")
-  let newImg=new Image
-  newImg.src=datasrc
-  newImg.onload=function(){
-    img.src=datasrc
-    img.flag=true
-    //newImg=null
+      //columns[index].innerHTML+=str;
+      itemBox.innerHTML += str
 
-  }
-
-}
-//设置图片懒加载 监听器
-function handle(){
-  let ob=new IntersectionObserver(function(changes){
-    changes.forEach(change=>{
-      if(change.isIntersecting){
-        //console.log(change.target);
-        let img=change.target.querySelector("img")
-        //console.log(img);
-        if(img.flag){
-          ob.unobserve(change.target)
-          return
-        }
-        showImg(img)
-      }
     })
 
-
-  },{threshold:[0.5]})
-
-  videoBoxs.forEach(videoBox=>{
-    ob.observe(videoBox)
-  })
-}
-handle()
-//加载更多
-let addMore2=document.getElementById("addMore2")
-let count=0
-function loadMore(){
-  let ob2=new IntersectionObserver(changes=>{
-    if(changes[0].isIntersecting){
-      count++
-      if(count>3){
-        ob2.unobserve(changes[0].target)
-        // addMore2.innerHTML="啊哦！到底了哦"
-        return
-      } 
-      getData()
-      render()
-      handle()
+    videoBoxs = Array.from(document.querySelectorAll(".videoBox"))
+    //console.log(videoBoxs);
+  }
+  render()
+  //展示图片
+  function showImg(img) {
+    let datasrc = img.getAttribute("data-src")
+    let newImg = new Image
+    newImg.src = datasrc
+    newImg.onload = function () {
+      img.src = datasrc
+      img.flag = true
+      //newImg=null
 
     }
-  },{
-    threshold:[0]
-  })
-  ob2.observe(addMore)
-}
-loadMore()
+
+  }
+  //设置图片懒加载 监听器
+  function handle() {
+    let ob = new IntersectionObserver(function (changes) {
+      changes.forEach(change => {
+        if (change.isIntersecting) {
+          //console.log(change.target);
+          let img = change.target.querySelector("img")
+          //console.log(img);
+          if (img.flag) {
+            ob.unobserve(change.target)
+            return
+          }
+          showImg(img)
+        }
+      })
+
+
+    }, { threshold: [0.5] })
+
+    videoBoxs.forEach(videoBox => {
+      ob.observe(videoBox)
+    })
+  }
+  handle()
+  //加载更多
+  let addMore2 = document.getElementById("addMore2")
+  let count = 0
+  function loadMore() {
+    let ob2 = new IntersectionObserver(changes => {
+      if (changes[0].isIntersecting) {
+        count++
+        if (count > 3) {
+          ob2.unobserve(changes[0].target)
+          // addMore2.innerHTML="啊哦！到底了哦"
+          return
+        }
+        getData()
+        render()
+        handle()
+
+      }
+    }, {
+      threshold: [0]
+    })
+    ob2.observe(addMore)
+  }
+  loadMore()
 }())
